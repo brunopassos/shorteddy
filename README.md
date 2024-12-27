@@ -1,7 +1,7 @@
 - [X] CI
 - [X] CRUD usuários
 - [X] Autenticação
-- [] CRUD URL
+- [X] CRUD URL
 - [] Validação
 - [] AuthGuard - get, update (atualiza apenas original_url) e delete (soft delete)
 - [] Endpoint que recebe uma url encurtada e redirecione o usuário para o url de origem e contabilize
