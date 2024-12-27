@@ -1,3 +1,4 @@
+- [X] CI
 - [X] CRUD usuários
 - [] Autenticação
 - [] CRUD URL
