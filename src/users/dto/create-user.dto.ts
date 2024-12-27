@@ -1,16 +1,15 @@
-import { Exclude } from "class-transformer"
+import { Exclude } from 'class-transformer';
 
 export class CreateUserDto {
-    email: string
-    password: string
+  email: string;
+  password: string;
 }
 
-
 export class UserDto {
-    id: string
-    email: string
-    @Exclude()
-    password: string
-    urls: string[]
-    is_active: boolean
+  id: string;
+  email: string;
+  @Exclude()
+  password: string;
+  urls: string[];
+  is_active: boolean;
 }
