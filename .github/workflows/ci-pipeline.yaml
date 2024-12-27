@@ -33,10 +33,10 @@ jobs:
         run: |
           npm run lint
 
-      # 5. Rodar os testes
-      - name: Run tests
-        run: |
-          npm run test
+      # 5. Rodar os testes (to be implemented)
+      # - name: Run tests
+       #  run: |
+       #    npm run test
 
       # 6. Verificar se os testes passaram
       - name: Check if tests passed

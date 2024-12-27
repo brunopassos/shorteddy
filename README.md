@@ -1,6 +1,6 @@
 - [X] CI
 - [X] CRUD usuários
-- [] Autenticação
+- [X] Autenticação
 - [] CRUD URL
 - [] Validação
 - [] AuthGuard - get, update (atualiza apenas original_url) e delete (soft delete)
