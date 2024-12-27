@@ -1,4 +1,4 @@
-- [] CRUD usuários
+- [X] CRUD usuários
 - [] Autenticação
 - [] CRUD URL
 - [] Validação
