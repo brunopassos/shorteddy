@@ -33,7 +33,23 @@ export class UrlsService {
     return this.urls.filter(url => url.deleted_at === null);
   }
 
+  findAndIncrementClicks(shortenedUrlId: string){
+    const foundUrlIndex = this.urls.findIndex((url) => url.shortened_url_id === shortenedUrlId)
 
+
+    if(foundUrlIndex === -1){
+      throw new HttpException(`Url not found`, HttpStatus.NOT_FOUND)
+    }
+
+    if(this.urls[foundUrlIndex].deleted_at){
+      throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST)
+    } 
+
+    this.urls[foundUrlIndex].click_cout += 1
+
+    return this.urls[foundUrlIndex]
+  }
+  
   findOne(id: string) {
     const foundUrl = this.urls.find((url) => url.id === id)
     
