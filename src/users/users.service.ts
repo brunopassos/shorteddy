@@ -21,7 +21,6 @@ export class UsersService {
       id: randomUUID(),
       email: createUserDto.email,
       password: bcryptHashSync(createUserDto.password, 10),
-      urls: [],
       is_active: true,
     };
 
@@ -77,7 +76,6 @@ export class UsersService {
 
     const updatedUser: UserDto = {
       id: this.users[foundUserIndex].id,
-      urls: this.users[foundUserIndex].urls,
       email: updateUserDto.email
         ? updateUserDto.email
         : this.users[foundUserIndex].email,

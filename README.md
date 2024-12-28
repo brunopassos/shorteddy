@@ -7,8 +7,7 @@
 - [X] Endpoint que recebe uma url encurtada e redirecione o usuário para o url de origem e contabilize
 - [X] URLOwner (url deve pertencer a um usuário quando ele estiver autenticado)
 - [X] Atualizar a rota de encurtar URL para retornar o domínio
-- [] Criar uma rota para listar as urls pertencentes ao usuário
-- [] Banco de dados
+- [X] Banco de dados
 - [] Refatoração
 - [] Testes
 - [] Documentação

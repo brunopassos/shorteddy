@@ -10,6 +10,5 @@ export class UserDto {
   email: string;
   @Exclude()
   password: string;
-  urls: string[];
   is_active: boolean;
 }
