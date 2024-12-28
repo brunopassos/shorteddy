@@ -83,7 +83,7 @@ export class UrlsService {
       throw new HttpException('Url not found or you are not the owner', HttpStatus.NOT_FOUND);
     }
   
-    if (foundUrl) {
+    if (foundUrl.deleted_at) {
       throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST);
     }
     

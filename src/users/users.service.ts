@@ -65,7 +65,7 @@ export class UsersService {
       }
     })
 
-    const invalidCredentialsMessage = 'Invalid username or password!';
+    const invalidCredentialsMessage = 'Invalid email or password!';
 
     if (!foundUser) {
       throw new HttpException(

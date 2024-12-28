@@ -14,6 +14,4 @@ export class OptionalAuthGuard extends BaseAuthGuard {
 
     return super.canActivate(context);
   }
-
-  
 }
