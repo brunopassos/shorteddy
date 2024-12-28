@@ -6,7 +6,6 @@ import { UrlEntity } from '../entities/url.entity';
 import { HttpException } from '@nestjs/common';
 import { mockUrlEntity } from '../__mock__/urls.mock';
 import * as crypto from 'crypto';
-import { nanoid } from 'nanoid';
 
 describe('UrlsService', () => {
   let service: UrlsService;
@@ -120,7 +119,6 @@ describe('UrlsService', () => {
 
   describe('findOneByIdAndUser', () => {
     it('should return a URL for a given ID and user', async () => {
-      console.log(mockUrlEntity)
       jest.spyOn(urlsRepository, 'findOne').mockResolvedValue(mockUrlEntity);
 
       const result = await service.findOneByIdAndUser(mockUrlEntity.id, mockUrlEntity.user_id);
