@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req } from '@nestjs/common';
 import { UrlsService } from './urls.service';
 import { CreateUrlDto } from './dto/create-url.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { Response } from 'express';
-import { OptionalAuthGuard } from 'src/auth/optional-auth/optional-auth.guard';
+import { OptionalAuthGuard } from '../auth/optional-auth/optional-auth.guard';
 
 @Controller('urls')
 export class UrlsController {
