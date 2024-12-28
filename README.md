@@ -2,13 +2,13 @@
 - [X] CRUD usuários
 - [X] Autenticação
 - [X] CRUD URL
-- [] Validação
+- [] Validação + Remover password ao criar usuário
 - [X] AuthGuard - get, update (atualiza apenas original_url) e delete (soft delete)
 - [X] Endpoint que recebe uma url encurtada e redirecione o usuário para o url de origem e contabilize
 - [X] URLOwner (url deve pertencer a um usuário quando ele estiver autenticado)
 - [X] Atualizar a rota de encurtar URL para retornar o domínio
 - [X] Banco de dados
-- [] Refatoração
+- [X] Refatoração
 - [] Testes
 - [] Documentação
 

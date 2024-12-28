@@ -13,25 +13,25 @@ import {
     id: string;
   
     @Column()
-    originalUrl: string;
+    original_url: string;
   
     @Column()
-    shortenedUrlId: string;
+    shortened_url_id: string;
   
     @Column({ default: 0 })
-    clickCount: number;
+    click_count: number;
   
     @CreateDateColumn()
-    createdAt: Date;
+    created_at: Date;
   
     @UpdateDateColumn()
-    updatedAt: Date;
+    updated_at: Date;
   
     @DeleteDateColumn({ nullable: true })
-    deletedAt: Date | null;
+    deleted_at: Date | null;
   
     @Column({ nullable: true })
-    userId: string | null;
+    user_id: string | null;
   
     @Column({ nullable: true })
     domain: string | null;

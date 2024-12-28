@@ -11,45 +11,45 @@ export class UrlsController {
 
   @Post()
   @UseGuards(OptionalAuthGuard)
-  create(@Body() createUrlDto: CreateUrlDto, @Req() req: any) {
+  async create(@Body() createUrlDto: CreateUrlDto, @Req() req: any) {
     const userId = req.user?.sub || null;
-    return this.urlsService.create(createUrlDto, userId);
+    return await this.urlsService.create(createUrlDto, userId);
   }
 
   @Get(':shortenedUrlId')
-  redirectToOriginalUrl(
+  async redirectToOriginalUrl(
     @Param('shortenedUrlId') shortenedUrlId: string,
     @Res() res: Response
   ){
-    const url = this.urlsService.findAndIncrementClicks(shortenedUrlId)
+    const url = await this.urlsService.findAndIncrementClicks(shortenedUrlId)
     return res.redirect(url.original_url)
   }
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Req() req: any) {
+  async findAll(@Req() req: any) {
     const userId = req.user?.sub;
-    return this.urlsService.findAllByUserId(userId);
+    return await this.urlsService.findAllByUserId(userId);
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  indOne(@Param('id') id: string, @Req() req: any) {
+  async findOne(@Param('id') id: string, @Req() req: any) {
     const userId = req.user?.sub;
-    return this.urlsService.findOneByIdAndUser(id, userId);
+    return await this.urlsService.findOneByIdAndUser(id, userId);
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUrlDto: CreateUrlDto, @Req() req: any) {
+  async update(@Param('id') id: string, @Body() updateUrlDto: CreateUrlDto, @Req() req: any) {
     const userId = req.user?.sub;
-    return this.urlsService.updateByIdAndUser(id, updateUrlDto, userId);
+    return await this.urlsService.updateByIdAndUser(id, updateUrlDto, userId);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req: any) {
+  async remove(@Param('id') id: string, @Req() req: any) {
     const userId = req.user?.sub;
-    this.urlsService.removeByIdAndUser(id, userId);
+    await this.urlsService.removeByIdAndUser(id, userId);
   }
 }
