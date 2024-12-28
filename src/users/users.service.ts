@@ -1,40 +1,55 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto, UserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { randomUUID } from 'crypto';
 import { hashSync as bcryptHashSync, compareSync } from 'bcryptjs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from './entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  private users: UserDto[] = [];
 
-  create(createUserDto: CreateUserDto): UserDto {
-    const foundUser = this.users.find(
-      (user) => createUserDto.email === user.email,
-    );
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>
+  ){}
 
-    if (foundUser) {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+
+    const userAlreadyExists = await this.usersRepository.findOne({
+      where: {
+        email: createUserDto.email
+      }
+    })
+
+    if(userAlreadyExists){
       throw new HttpException(`User already exists`, HttpStatus.BAD_REQUEST);
     }
 
-    const newUser: UserDto = {
+    const newUser: UserEntity = {
       id: randomUUID(),
       email: createUserDto.email,
       password: bcryptHashSync(createUserDto.password, 10),
-      is_active: true,
-    };
+      is_active: true
+    }
 
-    this.users.push(newUser);
+    await this.usersRepository.save(newUser)
 
-    return newUser;
+    return newUser
   }
 
-  findAll(): UserDto[] {
-    return this.users;
+  async findAll(): Promise<UserEntity[]>{
+    const users = await this.usersRepository.find()
+    return users
   }
 
-  findOne(id: string): UserDto {
-    const foundUser = this.users.find((user) => user.id === id);
+  async findOne(id: string): Promise<UserEntity> {
+    const foundUser = await this.usersRepository.findOne({
+      where:{
+        id
+      }
+    })
 
     if (!foundUser) {
       throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
@@ -43,19 +58,23 @@ export class UsersService {
     return foundUser;
   }
 
-  findByEmail(email: string, pass: string) {
-    const userFound = this.users.find((user) => user.email === email);
+  async findByEmail(email: string, pass: string): Promise<UserEntity>  {
+    const foundUser = await this.usersRepository.findOne({
+      where:{
+        email
+      }
+    })
 
     const invalidCredentialsMessage = 'Invalid username or password!';
 
-    if (!userFound) {
+    if (!foundUser) {
       throw new HttpException(
         invalidCredentialsMessage,
         HttpStatus.UNAUTHORIZED,
       );
     }
 
-    const passwordMatches = compareSync(pass, userFound.password);
+    const passwordMatches = compareSync(pass, foundUser.password);
 
     if (!passwordMatches) {
       throw new HttpException(
@@ -64,39 +83,39 @@ export class UsersService {
       );
     }
 
+    return foundUser;
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+    const userFound = await this.usersRepository.findOne({
+      where:{
+        id
+      }
+    })
+
+    if (!userFound) {
+      throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
+    }
+
+    userFound.email = updateUserDto.email ?? userFound.email
+    userFound.password = updateUserDto.password ? bcryptHashSync(updateUserDto.password, 10) : userFound.password
+
+    await this.usersRepository.update(userFound.id, userFound)
+
     return userFound;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): UserDto {
-    const foundUserIndex = this.users.findIndex((user) => user.id === id);
+  async remove(id: string): Promise<void> {
+    const foundUser = await this.usersRepository.findOne({
+      where:{
+        id
+      }
+    })
 
-    if (foundUserIndex === -1) {
+    if (!foundUser) {
       throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
     }
 
-    const updatedUser: UserDto = {
-      id: this.users[foundUserIndex].id,
-      email: updateUserDto.email
-        ? updateUserDto.email
-        : this.users[foundUserIndex].email,
-      password: updateUserDto.password
-        ? bcryptHashSync(updateUserDto.password, 10)
-        : this.users[foundUserIndex].password,
-      is_active: this.users[foundUserIndex].is_active,
-    };
-
-    this.users.splice(foundUserIndex, 1, updatedUser);
-
-    return updatedUser;
-  }
-
-  remove(id: string): void {
-    const foundUserIndex = this.users.findIndex((user) => user.id === id);
-
-    if (foundUserIndex === -1) {
-      throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
-    }
-
-    this.users[foundUserIndex].is_active = false;
+    await this.usersRepository.delete(id)
   }
 }

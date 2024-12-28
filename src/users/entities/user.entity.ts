@@ -8,9 +8,9 @@ export class UserEntity {
   @Column()
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ default: true })
-  isActive: boolean;
+  is_active: boolean;
 }

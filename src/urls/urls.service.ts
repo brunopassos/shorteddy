@@ -1,23 +1,30 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUrlDto, UrlDto } from './dto/create-url.dto';
+import { CreateUrlDto } from './dto/create-url.dto';
 import { randomUUID } from 'crypto';
 import { nanoid } from 'nanoid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UrlEntity } from './entities/url.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UrlsService {
+  
+  constructor(
+      @InjectRepository(UrlEntity)
+      private readonly urlsRepository: Repository<UrlEntity>
+    ){}
 
-  private urls: UrlDto[] = []
   private domain: string = process.env.SHORT_URL_DOMAIN
 
-  create(createUrlDto: CreateUrlDto, userId?: string): UrlDto {
+  async create(createUrlDto: CreateUrlDto, userId?: string): Promise<UrlEntity> {
 
-    const now = new Date().toISOString()
+    const now = new Date()
     
-    const newShortenedUrl: UrlDto = {
+    const newShortenedUrl: UrlEntity = {
       id: randomUUID(),
       original_url: createUrlDto.original_url,
       shortened_url_id: `${nanoid(6)}`,
-      click_cout: 0,
+      click_count: 0,
       created_at: now,
       updated_at: now,
       deleted_at: null,
@@ -25,36 +32,73 @@ export class UrlsService {
       domain: this.domain
     }
 
-    this.urls.push(newShortenedUrl)
+    await this.urlsRepository.save(newShortenedUrl)
 
     return newShortenedUrl
       
   }
 
-  findAllByUserId(userId: string) {
-    return this.urls.filter(url => url.deleted_at === null && url.user_id === userId);
+  async findAllByUserId(userId: string): Promise<UrlEntity[]> {
+    const urls = await this.urlsRepository.find({
+      where: {
+        deleted_at: null,
+        user_id: userId,
+      },
+    });
+
+    return urls
   }
 
-  findAndIncrementClicks(shortenedUrlId: string){
-    const foundUrlIndex = this.urls.findIndex((url) => url.shortened_url_id === shortenedUrlId)
+  async findAndIncrementClicks(shortenedUrlId: string): Promise<UrlEntity> {
+    const foundUrl = await this.urlsRepository.findOne({
+      where:{
+        shortened_url_id: shortenedUrlId
+      }
+    })
 
-
-    if(foundUrlIndex === -1){
+    if(!foundUrl){
       throw new HttpException(`Url not found`, HttpStatus.NOT_FOUND)
     }
 
-    if(this.urls[foundUrlIndex].deleted_at){
+    if(foundUrl.deleted_at){
       throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST)
     } 
 
-    this.urls[foundUrlIndex].click_cout += 1
+    foundUrl.click_count += 1
 
-    return this.urls[foundUrlIndex]
+    await this.urlsRepository.update(foundUrl.id, foundUrl)
+
+    return foundUrl
   }
   
-  findOneByIdAndUser(id: string, userId: string) {
-    const foundUrl = this.urls.find((url) => url.id === id && url.user_id === userId);
+  async findOneByIdAndUser(id: string, userId: string): Promise<UrlEntity> {
+    const foundUrl = await this.urlsRepository.findOne({
+      where: {
+        id,
+        user_id: userId,
+      },
+    });
     
+    if (!foundUrl) {
+      throw new HttpException('Url not found or you are not the owner', HttpStatus.NOT_FOUND);
+    }
+  
+    if (foundUrl) {
+      throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST);
+    }
+    
+    return foundUrl;
+  }
+
+  async updateByIdAndUser(id: string, updateUrlDto: CreateUrlDto, userId: string): Promise<UrlEntity> {
+    const foundUrl = await this.urlsRepository.findOne({
+      where: {
+        id,
+        user_id: userId,
+      },
+    });
+
+  
     if (!foundUrl) {
       throw new HttpException('Url not found or you are not the owner', HttpStatus.NOT_FOUND);
     }
@@ -62,52 +106,38 @@ export class UrlsService {
     if (foundUrl.deleted_at) {
       throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST);
     }
-    
+  
+    const now = new Date()
+
+    foundUrl.updated_at = now
+    foundUrl.original_url = updateUrlDto.original_url
+
+    await this.urlsRepository.update(id, foundUrl)
+  
     return foundUrl;
   }
-
-  updateByIdAndUser(id: string, updateUrlDto: CreateUrlDto, userId: string) {
-    const foundUrlIndex = this.urls.findIndex((url) => url.id === id && url.user_id === userId);
   
-    if (foundUrlIndex === -1) {
+
+  async removeByIdAndUser(id: string, userId: string): Promise<void> {
+    const foundUrl = await this.urlsRepository.findOne({
+      where: {
+        id,
+        user_id: userId,
+      },
+    });
+  
+    if (!foundUrl) {
       throw new HttpException('Url not found or you are not the owner', HttpStatus.NOT_FOUND);
     }
   
-    if (this.urls[foundUrlIndex].deleted_at) {
+    if (foundUrl.deleted_at) {
       throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST);
     }
   
-    const now = new Date().toISOString();
-    const updatedUrl: UrlDto = {
-      id: this.urls[foundUrlIndex].id,
-      click_cout: this.urls[foundUrlIndex].click_cout,
-      created_at: this.urls[foundUrlIndex].created_at,
-      updated_at: now,
-      deleted_at: this.urls[foundUrlIndex].deleted_at,
-      original_url: updateUrlDto.original_url,
-      shortened_url_id: this.urls[foundUrlIndex].shortened_url_id,
-      user_id: this.urls[foundUrlIndex].user_id,
-    };
+    const now = new Date()
   
-    this.urls.splice(foundUrlIndex, 1, updatedUrl);
-  
-    return updatedUrl;
-  }
-  
+    foundUrl.deleted_at = now;
 
-  removeByIdAndUser(id: string, userId: string) {
-    const foundUrlIndex = this.urls.findIndex((url) => url.id === id && url.user_id === userId);
-  
-    if (foundUrlIndex === -1) {
-      throw new HttpException('Url not found or you are not the owner', HttpStatus.NOT_FOUND);
-    }
-  
-    if (this.urls[foundUrlIndex].deleted_at) {
-      throw new HttpException('Url is deactivated', HttpStatus.BAD_REQUEST);
-    }
-  
-    const now = new Date().toISOString();
-  
-    this.urls[foundUrlIndex].deleted_at = now;
+    await this.urlsRepository.update(id, foundUrl)
   }  
 }

@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, pass: string): Promise<AuthResponseDto> {
-    const user = this.usersService.findByEmail(email, pass);
+    const user = await this.usersService.findByEmail(email, pass);
     const payload = { sub: user.id, username: user.email };
     return {
       token: await this.jwtService.signAsync(payload),
