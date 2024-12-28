@@ -2,7 +2,6 @@
 - [X] CRUD usuários
 - [X] Autenticação
 - [X] CRUD URL
-- [] Validação + Remover password ao criar usuário
 - [X] AuthGuard - get, update (atualiza apenas original_url) e delete (soft delete)
 - [X] Endpoint que recebe uma url encurtada e redirecione o usuário para o url de origem e contabilize
 - [X] URLOwner (url deve pertencer a um usuário quando ele estiver autenticado)
@@ -10,4 +9,14 @@
 - [X] Banco de dados
 - [X] Refatoração
 - [X] Testes
+- [] Validação + Remover password ao criar usuário
+- [] observabilidade
+- [] Pontos de melhoria no README
+- [] Deploy em cloud
+- [] Api Gateway
+- [] Construir deployments do Kubernetes para deploy.
+- [] Construir artefatos do Terraform para deploy.
+- [] Transformar o sistema em multi tenant.
+- [] Definir e assegurar quais versões do NodeJS são aceitas no projeto.
 - [] Documentação
+- [] README explicando como rodar o projeto
