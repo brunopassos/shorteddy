@@ -11,4 +11,5 @@ export class UrlDto {
     updated_at: string
     deleted_at: string | null
     user_id?: string | null
+    domain?: string | null
 }

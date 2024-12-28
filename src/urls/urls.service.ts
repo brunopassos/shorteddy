@@ -21,7 +21,8 @@ export class UrlsService {
       created_at: now,
       updated_at: now,
       deleted_at: null,
-      user_id: userId
+      user_id: userId,
+      domain: this.domain
     }
 
     this.urls.push(newShortenedUrl)
