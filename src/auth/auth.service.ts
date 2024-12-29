@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -15,8 +15,13 @@ export class AuthService {
   async signIn(email: string, pass: string): Promise<AuthResponseDto> {
     const user = await this.usersService.findByEmail(email, pass);
 
+    const invalidCredentialsMessage = 'Invalid email or password!';
+    
     if (!user) {
-      throw new Error('Invalid email or password!');
+      throw new HttpException(
+        invalidCredentialsMessage,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     
     const payload = { sub: user.id, username: user.email };

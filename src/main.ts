@@ -7,6 +7,7 @@ import { SentryInterceptor } from './common/interceptors/sentry.interceptor';
 
 async function bootstrap() {
   const isSentryEnabled = process.env.SENTRY_ENABLED === 'true';
+  const PORT = process.env.PORT
 
   if (isSentryEnabled) {
     Sentry.init({
@@ -22,6 +23,8 @@ async function bootstrap() {
     app.useGlobalInterceptors(new SentryInterceptor());
   }
 
-  await app.listen(3000, '0.0.0.0');
+  app.useLogger(['log', 'debug', 'error', 'warn']);
+  
+  await app.listen(Number(PORT), '0.0.0.0');
 }
 bootstrap();

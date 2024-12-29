@@ -1,0 +1,199 @@
+{
+  "version": 3,
+  "name": "URL Shortener Gateway",
+  "port": 8080,
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "extra_config": {
+    "github.com/devopsfaith/krakend/logging": {
+      "level": "DEBUG"
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/auth/login",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/auth/login",
+          "host": ["http://app:3000"],
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/users",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/users",
+          "host": ["http://app:3000"],
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/users/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/users/{id}",
+          "host": ["http://app:3000"],
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/users/detail/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/users/{id}",
+          "host": ["http://app:3000"],
+          "mapping": {
+            "id": "id"
+          },
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/users/detail/{id}",
+      "method": "PATCH",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/users/{id}",
+          "host": ["http://app:3000"],
+          "mapping": {
+            "id": "id"
+          },
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/urls",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/urls",
+          "host": ["http://app:3000"],
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/urls",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/urls",
+          "host": ["http://app:3000"],
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/urls/detail/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/urls/{id}",
+          "host": ["http://app:3000"],
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          },
+          "mapping": {
+            "id": "id"
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/urls/detail/{id}",
+      "method": "PATCH",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/urls/{id}",
+          "host": ["http://app:3000"],
+          "mapping": {
+            "id": "id"
+          },
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "endpoint": "/urls/detail/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/urls/{id}",
+          "host": ["http://app:3000"],
+          "mapping": {
+            "id": "id"
+          },
+          "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+              "return_error_details": true,
+              "staus_successful": [200, 201, 400, 401, 404, 409]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
