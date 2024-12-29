@@ -6,6 +6,7 @@ import { hashSync as bcryptHashSync, compareSync } from 'bcryptjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -36,12 +37,7 @@ export class UsersService {
 
     await this.usersRepository.save(newUser)
 
-    return newUser
-  }
-
-  async findAll(): Promise<UserEntity[]>{
-    const users = await this.usersRepository.find()
-    return users
+    return plainToClass(UserEntity, newUser);
   }
 
   async findOne(id: string): Promise<UserEntity> {
@@ -55,7 +51,7 @@ export class UsersService {
       throw new HttpException(`User not found`, HttpStatus.NOT_FOUND);
     }
 
-    return foundUser;
+    return plainToClass(UserEntity, foundUser);
   }
 
   async findByEmail(email: string, pass: string): Promise<UserEntity>  {

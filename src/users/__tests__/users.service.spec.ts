@@ -58,16 +58,15 @@ describe('UsersService', () => {
         password: 'mocked-hashed-password',
         is_active: true,
       });
-  
+    
       const result = await service.create({
         email: 'bruno@mail.com',
         password: '123456',
       });
-  
+    
       expect(result).toEqual({
         id: '123e4567-e89b-12d3-a456-426614174000',
         email: 'bruno@mail.com',
-        password: 'mocked-hashed-password',
         is_active: true,
       });
     });
@@ -82,24 +81,17 @@ describe('UsersService', () => {
   });
   
   
-  describe('findAll', () => {
-    it('should return a list of users', async () => {
-      jest.spyOn(usersRepository, 'find').mockResolvedValueOnce([usersEntityMock]);
-
-      const result = await service.findAll();
-
-      expect(result).toEqual([usersEntityMock]);
-    });
-  });
-
-  
   describe('findOne', () => {
     it('should return a user by ID', async () => {
       jest.spyOn(usersRepository, 'findOne').mockResolvedValueOnce(usersEntityMock);
-
+    
       const result = await service.findOne('some-uuid');
-
-      expect(result).toEqual(usersEntityMock);
+    
+      expect(result).toEqual({
+        id: 'some-uuid',
+        email: 'bruno@mail.com',
+        is_active: true,
+      });
     });
 
     it('should throw an exception if user is not found', async () => {
@@ -109,14 +101,6 @@ describe('UsersService', () => {
         new HttpException('User not found', HttpStatus.NOT_FOUND),
       );
     });
-
-    it('Should return a user by ID - TESTE', async () => {
-      jest.spyOn(usersRepository, 'findOne').mockResolvedValueOnce(usersEntityMock)
-
-      const result = await service.findOne('some-uuid')
-
-      expect(result).toEqual(usersEntityMock)
-    })
   });
 
   describe('findByEmail', () => {
