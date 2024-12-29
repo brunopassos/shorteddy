@@ -9,7 +9,7 @@
 - [X] Banco de dados
 - [X] Refatoração
 - [X] Testes
-- [] Validação + Remover password ao criar usuário
+- [X] Validação + Remover password ao criar usuário
 - [X] Observabilidade
 - [] Pontos de melhoria no README
 - [] Deploy em cloud

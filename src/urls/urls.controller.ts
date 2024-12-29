@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req, UsePipes } from '@nestjs/common';
 import { UrlsService } from './urls.service';
 import { CreateUrlDto } from './dto/create-url.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { Response } from 'express';
 import { OptionalAuthGuard } from '../auth/optional-auth/optional-auth.guard';
+import { UrlValidationPipe } from '../pipes/url-validation.pipe';
 
 @Controller('urls')
 export class UrlsController {
@@ -11,6 +12,7 @@ export class UrlsController {
 
   @Post()
   @UseGuards(OptionalAuthGuard)
+  @UsePipes(UrlValidationPipe)
   async create(@Body() createUrlDto: CreateUrlDto, @Req() req: any) {
     const userId = req.user?.sub || null;
     return await this.urlsService.create(createUrlDto, userId);
@@ -41,6 +43,7 @@ export class UrlsController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
+  @UsePipes(UrlValidationPipe)
   async update(@Param('id') id: string, @Body() updateUrlDto: CreateUrlDto, @Req() req: any) {
     const userId = req.user?.sub;
     return await this.urlsService.updateByIdAndUser(id, updateUrlDto, userId);

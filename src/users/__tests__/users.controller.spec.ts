@@ -17,7 +17,6 @@ describe('UsersController', () => {
           provide: UsersService,
           useValue: {
             create: jest.fn(),
-            findAll: jest.fn(),
             findOne: jest.fn(),
             update: jest.fn(),
             remove: jest.fn(),
@@ -44,17 +43,6 @@ describe('UsersController', () => {
 
       expect(service.create).toHaveBeenCalledWith(userDto);
       expect(result).toEqual(usersEntityMock);
-    });
-  });
-
-  describe('findAll', () => {
-    it('should call service.findAll and return a list of users', async () => {
-      jest.spyOn(service, 'findAll').mockResolvedValueOnce([usersEntityMock]);
-
-      const result = await controller.findAll();
-
-      expect(service.findAll).toHaveBeenCalled();
-      expect(result).toEqual([usersEntityMock]);
     });
   });
 
