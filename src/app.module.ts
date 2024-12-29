@@ -6,9 +6,11 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UrlsModule } from './urls/urls.module';
 import { DatabaseModule } from './database/database.module';
+import { SentryModule } from '@sentry/nestjs/setup';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     UsersModule,
     AuthModule,
     ConfigModule.forRoot({
