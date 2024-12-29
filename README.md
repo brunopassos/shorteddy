@@ -13,7 +13,7 @@
 - [X] Observabilidade
 - [] Pontos de melhoria no README
 - [] Deploy em cloud
-- [] Api Gateway
+- [X] Api Gateway
 - [] Construir deployments do Kubernetes para deploy.
 - [] Construir artefatos do Terraform para deploy.
 - [X] Transformar o sistema em multi tenant.
