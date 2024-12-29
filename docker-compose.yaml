@@ -6,12 +6,8 @@ services:
     container_name: nest-app
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_NAME: shorteddy-db
+    env_file:
+      - .env
     depends_on:
       - db
     networks:
@@ -22,10 +18,8 @@ services:
     container_name: postgres-db
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: shorteddy-db
+    env_file:
+      - .env
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -48,12 +42,8 @@ services:
     depends_on:
       - db
     entrypoint: ["sh", "-c", "npm run migration:run"]
-    environment:
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_NAME: shorteddy-db
+    env_file:
+      - .env
     networks:
       - app-network
 
