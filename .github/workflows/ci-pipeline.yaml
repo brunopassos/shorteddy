@@ -47,3 +47,6 @@ jobs:
       # - name: Build the application
       #   run: |
       #     npm run build
+
+    env:
+      SENTRY_AUTH_TOKEN: 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

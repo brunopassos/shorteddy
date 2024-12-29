@@ -10,7 +10,7 @@
     "npm": "10.9.0"
   },
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && npm run sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -26,7 +26,8 @@
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:create": "ts-node ./src/scripts/createMigration.ts",
     "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d ./src/database/database.provider.ts",
-    "migration:revert": "npm run typeorm migration:revert -- -d ./src/database/database.provider.ts"
+    "migration:revert": "npm run typeorm migration:revert -- -d ./src/database/database.provider.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org bruno-lh --project node-nestjs ./dist && sentry-cli sourcemaps upload --org bruno-lh --project node-nestjs ./dist"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -36,8 +37,14 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
+    "@sentry/cli": "^2.39.1",
+    "@sentry/nestjs": "^8.47.0",
+    "@sentry/node": "^8.47.0",
+    "@sentry/profiling-node": "^8.47.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
+    "dotenv": "^16.4.7",
+    "joi": "^17.13.3",
     "nanoid": "^3.3.8",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
