@@ -10,7 +10,7 @@
     "npm": "10.9.0"
   },
   "scripts": {
-    "build": "nest build && npm run sentry:sourcemaps",
+    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
