@@ -1,5 +1,6 @@
 import { Injectable, ExecutionContext } from '@nestjs/common';
 import { AuthGuard as BaseAuthGuard } from '../auth.guard'
+import { Request } from 'express';
 
 @Injectable()
 export class OptionalAuthGuard extends BaseAuthGuard {
@@ -12,6 +13,17 @@ export class OptionalAuthGuard extends BaseAuthGuard {
       return true;
     }
 
-    return super.canActivate(context);
+    try {
+      const isValid = await super.canActivate(context);
+      return isValid as boolean;
+    } catch (error) {
+      request['user'] = null;
+      return true;
+    }
+  }
+
+  protected extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }

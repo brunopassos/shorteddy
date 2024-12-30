@@ -11,12 +11,10 @@
 - [X] Testes
 - [X] Validação + Remover password ao criar usuário
 - [X] Observabilidade
-- [] Pontos de melhoria no README
-- [] Deploy em cloud
+- [X] Deploy em cloud
 - [X] Api Gateway
-- [] Construir deployments do Kubernetes para deploy.
-- [] Construir artefatos do Terraform para deploy.
 - [X] Transformar o sistema em multi tenant.
 - [X] Definir e assegurar quais versões do NodeJS são aceitas no projeto.
+- [] Pontos de melhoria no README
 - [] Documentação
 - [] README explicando como rodar o projeto
