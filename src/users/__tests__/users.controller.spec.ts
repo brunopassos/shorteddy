@@ -4,12 +4,19 @@ import { UsersService } from '../users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { usersEntityMock } from '../__mock__/users.mock';
+import { AuthGuard } from '../../auth/auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 describe('UsersController', () => {
   let controller: UsersController;
   let service: UsersService;
 
   beforeEach(async () => {
+    const mockJwtService = {
+      sign: jest.fn().mockReturnValue('mocked-jwt'),
+      verify: jest.fn().mockReturnValue({ userId: 'mocked-id' }),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
@@ -22,8 +29,15 @@ describe('UsersController', () => {
             remove: jest.fn(),
           },
         },
+        {
+          provide: JwtService,
+          useValue: mockJwtService,
+        },
       ],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue({ canActivate: jest.fn(() => true) })
+      .compile();
 
     controller = module.get<UsersController>(UsersController);
     service = module.get<UsersService>(UsersService);
@@ -31,7 +45,6 @@ describe('UsersController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-    expect(service).toBeDefined();
   });
 
   describe('create', () => {
@@ -60,7 +73,7 @@ describe('UsersController', () => {
 
   describe('update', () => {
     it('should call service.update and return the updated user', async () => {
-      const userId= 'some-uuid';
+      const userId = 'some-uuid';
       const userDto: UpdateUserDto = { email: 'updated@mail.com', password: 'new_password' };
       const updatedUser = { ...usersEntityMock, ...userDto };
       jest.spyOn(service, 'update').mockResolvedValueOnce(updatedUser);

@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "name": "URL Shortener Gateway",
+  "name": "ShorTeddy API Gateway",
   "port": 8080,
   "timeout": "3000ms",
   "cache_ttl": "300s",
@@ -21,7 +21,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
@@ -38,7 +38,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
@@ -50,12 +50,13 @@
       "output_encoding": "no-op",
       "backend": [
         {
-          "url_pattern": "/users/{id}",
+          "url_pattern": "/users/{id}",          
+          "input_headers": ["*"],
           "host": ["http://app:3000"],
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
@@ -75,27 +76,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "endpoint": "/users/detail/{id}",
-      "method": "PATCH",
-      "output_encoding": "no-op",
-      "backend": [
-        {
-          "url_pattern": "/users/{id}",
-          "host": ["http://app:3000"],
-          "mapping": {
-            "id": "id"
-          },
-          "extra_config": {
-            "github.com/devopsfaith/krakend/proxy": {
-              "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 405, 409]
             }
           }
         }
@@ -112,7 +93,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
@@ -129,7 +110,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
@@ -143,14 +124,14 @@
         {
           "url_pattern": "/urls/{id}",
           "host": ["http://app:3000"],
+          "mapping": {
+            "id": "id"
+          },
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
-          },
-          "mapping": {
-            "id": "id"
           }
         }
       ]
@@ -169,7 +150,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
@@ -189,7 +170,7 @@
           "extra_config": {
             "github.com/devopsfaith/krakend/proxy": {
               "return_error_details": true,
-              "staus_successful": [200, 201, 400, 401, 404, 409]
+              "status_successful": [200, 201, 400, 401, 404, 409]
             }
           }
         }
