@@ -10,6 +10,7 @@
     "npm": "10.9.0"
   },
   "scripts": {
+    "setup": "npm install && npm run docker:compose",
     "build": "nest build && npm run sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
