@@ -15,6 +15,7 @@
 - [X] Api Gateway
 - [X] Transformar o sistema em multi tenant.
 - [X] Definir e assegurar quais versões do NodeJS são aceitas no projeto.
+- [X] Documentação
+- [] Url Redirect - AWS
 - [] Pontos de melhoria no README
-- [] Documentação
 - [] README explicando como rodar o projeto
