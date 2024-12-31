@@ -13,7 +13,7 @@
 
 ```bash
 1 - Antes de iniciar o setup, é necessário que o Docker esteja em execução.
-2 - Variáveis de ambiente necessárias já estão sendo disponibilizadas (`.env.example`) pois é um projeto de teste. Somente o DSN do Sentry que deve ser inserido. Caso não queira logs do Sentry, é só setar a variável de ambiente SENTRY_ENABLED=false
+2 - Variáveis de ambiente necessárias já estão sendo disponibilizadas (`.env.example`) pois é um projeto de teste.
 3 - Versão do Node suportada: 22.12.0
 ```
 
@@ -30,6 +30,7 @@ git clone <URL_DO_REPOSITORIO>
 
 ```bash
 cd shorteddy
+crie um arquivo .env na raiz do projeto e copie o conteúdo de .env.example para .env
 npm run setup
 ```
 
@@ -66,6 +67,8 @@ Endereço da aplicação rodando em um AWS EC2 `http://18.230.11.251:3000/`
 Implementei o Sentry como ferramenta de monitoramento de logs. Durante o uso percebi que existe um delay entre o erro acontecer e o sentry notificar na plataforma. Porém, os logs estão sendo coletados conforme print abaixo:
 
 ![alt text](image.png)
+
+O mesmo erro que enfrentei em relação ao Sentry subindo a aplicação para a AWS você vai enfrente clonando o repositório, como não consegui chegar a solução, decidi por remover o sentry do projeto.
 
 ## KrakenD
 
